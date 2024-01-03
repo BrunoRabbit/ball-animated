@@ -1,4 +1,3 @@
-// ! separar em outras funcoes e fazer um pendulo em outra branch
 type Props = {
     upForce: number;
     gravity: number;
