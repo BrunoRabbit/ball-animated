@@ -1,45 +1,100 @@
-import { View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, StyleSheet, Animated, Easing } from 'react-native';
 import { styles } from './styles';
-import { BallController } from './components/BallController';
 import { Ball } from './components/Ball';
-import { useEffect, useState } from 'react';
-import { applyGravity } from './utils/BallUtils/index';
-
-let timer: number;
 
 const App = () => {
-  const [gravity, setGravity] = useState(.98);
-  const [upForce, setUpforce] = useState(0);
-  const [velocity, setVelocity] = useState(0);
-  const [posY, setPosY] = useState(0);
-
-  const props = { gravity, upForce, velocity, posY, setUpforce, setVelocity, setPosY };
+  const rotateAnim = useRef(new Animated.Value(0)).current;
+  const rotateAnim2 = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    () => applyGravity(props);
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(rotateAnim, {
+          toValue: 1,
+          duration: 1000,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.timing(rotateAnim, {
+          toValue: -1,
+          duration: 2000,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.timing(rotateAnim, {
+          toValue: 0,
+          duration: 1000,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
 
-    window.clearTimeout(timer);
-    timer = window.setTimeout(() => applyGravity(props), 30);
-  }, [gravity, upForce, velocity, posY]);
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(rotateAnim2, {
+          toValue: 1.6,
+          duration: 1000,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.timing(rotateAnim2, {
+          toValue: -1.6,
+          duration: 2000,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+        Animated.timing(rotateAnim2, {
+          toValue: 0,
+          duration: 1500,
+          easing: Easing.inOut(Easing.sin),
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+  }, [rotateAnim, rotateAnim2]);
 
-  const _handleForceBtn = () => {
-    setUpforce(7);
-  }
+  const rotation = rotateAnim.interpolate({
+    inputRange: [-1, 1],
+    outputRange: ['-30deg', '30deg'],
+  });
 
+  const rotation2 = rotateAnim2.interpolate({
+    inputRange: [-1, 1],
+    outputRange: ['-30deg', '30deg'],
+  });
+
+  const inverseRotation = rotateAnim.interpolate({
+    inputRange: [-1, 1],
+    outputRange: ['30deg', '-30deg'],
+  });
+
+  const inverseRotation2 = rotateAnim2.interpolate({
+    inputRange: [-1, 1],
+    outputRange: ['30deg', '-30deg'],
+  });
   return (
     <View style={styles.container}>
-      <View style={styles.ballArea}>
-        <Ball posY={posY} />
+      <View style={styles.base} />
+      <View style={{ flexDirection: 'row' }}>
+        <Animated.View style={{ transform: [{ translateY: -100 }] }}>
+          <Animated.View style={[styles.rope, { transform: [{ rotate: rotation }, { translateY: 100 }] }]}>
+            <Animated.View style={{ transform: [{ rotate: inverseRotation }] }}>
+              <Ball backgroundColor='#888' />
+            </Animated.View>
+          </Animated.View>
+        </Animated.View>
+        <Animated.View style={{ transform: [{ translateY: -100 }] }}>
+          <Animated.View style={[styles.rope, { transform: [{ rotate: rotation2 }, { translateY: 100 }] }]}>
+            <Animated.View style={{ transform: [{ rotate: inverseRotation2 }] }}>
+              <Ball backgroundColor='#AAA' />
+            </Animated.View>
+          </Animated.View>
+        </Animated.View>
       </View>
-
-      <BallController
-        posY={posY}
-        upForce={upForce}
-        velocity={velocity}
-        handleForceBtn={_handleForceBtn}
-      />
     </View>
   );
-}
+};
 
 export default App;

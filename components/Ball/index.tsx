@@ -1,14 +1,11 @@
 import { View } from "react-native";
 import { styles } from './styles';
+import React from "react";
 
 type Props = {
-    posY: number,
+    backgroundColor: string,
 }
 
-export const Ball = ({ posY }: Props) => {
-    return (
-        <View style={[styles.container, { bottom: posY }]}>
-
-        </View>
-    );
+export const Ball = ({ backgroundColor }: Props) => {
+    return <View style={[styles.container, { backgroundColor: backgroundColor }]} />
 }

@@ -2,10 +2,10 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
     container: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-        backgroundColor: '#FFF',
-        position: 'absolute',
+        width: 50,
+        height: 50,
+        bottom: -10,
+        borderRadius: 25,
+        backgroundColor: 'blue',
     }
 });

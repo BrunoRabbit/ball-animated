@@ -2,18 +2,18 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 
 type Props = {
-    upForce: number,
-    velocity: number,
+    // upForce: number,
+    // velocity: number,
     posY: number,
     handleForceBtn: () => void,
 }
 
-export const BallController = ({ upForce, velocity, posY, handleForceBtn }: Props) => {
+export const BallController = ({  posY, handleForceBtn }: Props) => {
     return (
         <View style={styles.ballController}>
             <View>
-                <Text style={styles.ballControllerText}>UpForce: {upForce.toFixed(2)}</Text>
-                <Text style={styles.ballControllerText}>Velocity: {velocity.toFixed(2)}</Text>
+                {/* <Text style={styles.ballControllerText}>UpForce: {upForce.toFixed(2)}</Text>
+                <Text style={styles.ballControllerText}>Velocity: {velocity.toFixed(2)}</Text> */}
                 <Text style={styles.ballControllerText}>PosY: {posY.toFixed(2)}</Text>
 
             </View>
